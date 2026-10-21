@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build (Release)
+        run: |
+          xcodebuild -project N75Studio.xcodeproj -target N75Studio \
+            -configuration Release CODE_SIGNING_ALLOWED=NO build
+      - name: Check the app bundle exists
+        run: test -d build/Release/N75Studio.app
